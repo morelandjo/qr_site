@@ -30,7 +30,7 @@ function App() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Container size="sm">
           <Stack align="center" gap="xl">
-            <Title order={1} ta="center">QR Code Generator</Title>
+            <Title order={1} ta="center">MHS QR Code Generator</Title>
             
             <Paper shadow="md" p="xl" radius="md" w="100%" maw={400}>
               <form onSubmit={handleSubmit(onSubmit)}>
