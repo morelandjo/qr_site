@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { MantineProvider, Container, Title, TextInput, Button, Stack, Paper, Switch } from '@mantine/core'
 import { useForm, Controller } from 'react-hook-form'
 import QRCodeLogo from 'react-qrcode-logo'
@@ -13,6 +13,7 @@ interface FormData {
 function App() {
   const [qrValue, setQrValue] = useState<string>('')
   const [showLogo, setShowLogo] = useState<boolean>(false)
+  const qrRef = useRef<any>(null)
   const { register, handleSubmit, control, formState: { errors } } = useForm<FormData>({
     defaultValues: {
       text: '',
@@ -23,6 +24,20 @@ function App() {
   const onSubmit = (data: FormData) => {
     setQrValue(data.text)
     setShowLogo(data.embedLogo)
+  }
+
+  const downloadQRCode = () => {
+    if (qrRef.current) {
+      const canvas = qrRef.current.canvas?.current
+      if (canvas) {
+        const link = document.createElement('a')
+        link.download = 'qr-code.png'
+        link.href = canvas.toDataURL('image/png')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+    }
   }
 
   return (
@@ -72,6 +87,7 @@ function App() {
                 <Stack align="center" gap="md">
                   <Title order={3} size="h4">Your QR Code:</Title>
                   <QRCodeLogo
+                    ref={qrRef}
                     value={qrValue}
                     size={200}
                     bgColor="#ffffff"
@@ -86,6 +102,9 @@ function App() {
                   <div style={{ fontSize: '14px', color: '#666', textAlign: 'center', wordBreak: 'break-all' }}>
                     {qrValue.length > 50 ? qrValue.substring(0, 50) + '...' : qrValue}
                   </div>
+                  <Button onClick={downloadQRCode} size="sm" variant="outline">
+                    Download PNG
+                  </Button>
                 </Stack>
               </Paper>
             )}
