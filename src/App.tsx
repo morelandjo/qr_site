@@ -27,16 +27,14 @@ function App() {
   }
 
   const downloadQRCode = () => {
-    if (qrRef.current) {
-      const canvas = qrRef.current.canvas?.current
-      if (canvas) {
-        const link = document.createElement('a')
-        link.download = 'qr-code.png'
-        link.href = canvas.toDataURL('image/png')
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
+    const canvas = document.querySelector('canvas')
+    if (canvas) {
+      const link = document.createElement('a')
+      link.download = 'qr-code.png'
+      link.href = canvas.toDataURL('image/png')
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     }
   }
 
